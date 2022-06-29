@@ -6,4 +6,8 @@ export class Secretaria extends Pessoa {
     dataContratacao! : Date
     pis! : string
 
+    constructor() {
+        super();
+        this.ativo = true
+    }
 }

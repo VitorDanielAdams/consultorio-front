@@ -51,7 +51,7 @@
 
 .footer {
   background: #0e3f60;
-  max-height: 80px;
+  max-height: 50px;
     h1 {
       color: #ffffff;
     }

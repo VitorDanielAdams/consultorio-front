@@ -12,4 +12,9 @@ export class Agenda extends AbstractEntity {
     dataAte! : Date
     encaixe! : boolean
 
+    constructor() {
+        super();
+        this.ativo = true
+    }
+    
 }

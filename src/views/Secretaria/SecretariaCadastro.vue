@@ -90,7 +90,7 @@
             <div class="field">
                 <div class="control">
                     <router-link to="/secretarias">
-                        <input class="button has-background-primary has-text-white is-uppercase btn" value="Voltar">
+                        <input class="button has-background-link has-text-white is-uppercase btn" value="Voltar">
                     </router-link>
                 </div>
             </div>
@@ -104,12 +104,10 @@
 </template>
 
 <script lang="ts">
-    import { Options,Vue } from 'vue-class-component'; 
+    import { Vue } from 'vue-class-component'; 
 
-    @Options({
-        
-    })
-    export default class PacienteCadastro extends Vue {
+    
+    export default class SecretariaCadastro extends Vue {
 
     }
 </script>

@@ -13,4 +13,9 @@ export class Historico extends AbstractEntity {
     data! : Date
     observacao! : string
 
+    constructor() {
+        super();
+        this.ativo = true
+    }
+    
 }

@@ -6,7 +6,7 @@
         <input class="input" type="text" placeholder="Pesquisar">
       </div>
       <div class="column is-3">
-        <router-link to="/especialidadeCadastro"><button class="button">Cadastrar</button></router-link>
+        <router-link to="/especialidadeCadastro"><button class="button has-background-primary">Cadastrar</button></router-link>
       </div>
     </div>
    
@@ -18,20 +18,49 @@
                 <th>Opções</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody v-for="especialidade in this.especialidedesList" :key="especialidade.id">
             <tr>
-                <td></td>
-                <td><router-link to="/detalheEspecialidade"><button class="button is-size-6">Detalhar</button></router-link></td>
+                <td>{{especialidade.nome}}</td>
+                <td><router-link to="/detalheEspecialidade"><button class="button is-size-6 has-background-info">Detalhar</button></router-link></td>
             </tr>
         </tbody>
       </table>
-    </div>
- 
+    </div> 
   </div>
 </template>
 
 <script lang="ts">
   import { Vue } from 'vue-class-component'; 
 
-  export default class EspecialidadeView extends Vue {}
+  import { PageRequest } from '@/model/page/page-request';
+  import { PageResponse } from '@/model/page/page-response';
+
+  import { Especialidade } from '@/model/especialidade.model';
+  import { EspecialidadeClient } from '@/client/especialidade.client';
+
+  export default class EspecialidadeView extends Vue {
+    
+    private pageRequest: PageRequest = new PageRequest()
+    private pageResponse: PageResponse<Especialidade> = new PageResponse()
+
+    private especialidedesList: Especialidade[] = []
+    private especialidadeClient!: EspecialidadeClient
+
+    public mounted():void {
+      this.especialidadeClient = new EspecialidadeClient()
+      this.listarEspecialidades()
+    }
+
+    private listarEspecialidades():void {
+      this.especialidadeClient.findByFiltrosPaginado(this.pageRequest)
+        .then(
+          success => {
+            this.pageResponse = success
+            this.especialidedesList = this.pageResponse.content
+          },
+          error => console.log(error)
+        )
+    }
+
+  }
 </script>

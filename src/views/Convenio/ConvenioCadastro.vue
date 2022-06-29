@@ -21,7 +21,7 @@
             <div class="field">
                 <div class="control">
                     <router-link to="/convenios">
-                        <input class="button has-background-primary has-text-white is-uppercase btn" value="Voltar">
+                        <input class="button has-background-link has-text-white is-uppercase btn" value="Voltar">
                     </router-link>
                 </div>
             </div>

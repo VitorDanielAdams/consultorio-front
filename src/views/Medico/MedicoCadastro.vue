@@ -98,10 +98,16 @@
             </div>
         </div>
         <div class="column is-10 is-flex is-justify-content-space-between p-5">
+            <div class="field has-text-left">
+                <label class="checkbox">
+                    <input v-model="especialidade.ativo" checked type="checkbox">
+                    Ativo
+                </label>
+            </div>
             <div class="field">
                 <div class="control">
                     <router-link to="/medicos">
-                        <input class="button has-background-primary has-text-white is-uppercase btn" value="Voltar">
+                        <input class="button has-background-link has-text-white is-uppercase btn" value="Voltar">
                     </router-link>
                 </div>
             </div>

@@ -13,4 +13,9 @@ export class Pessoa extends AbstractEntity {
     nacionalidade! : string
     sexo! : Sexo
 
+    constructor() {
+        super();
+        this.ativo = true
+    }
+    
 }
