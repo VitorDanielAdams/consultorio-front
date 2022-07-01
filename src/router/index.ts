@@ -7,11 +7,11 @@ import ConvenioView from '../views/Convenio/ConvenioView.vue'
 import EspecialidadeView from '../views/Especialidade/EspecialidadeView.vue'
 import AgendaView from '../views/Agenda/AgendaView.vue'
 import HistoricoView from '../views/Historico/HistoricoView.vue'
-import MedicoCadastro from '../views/Medico/MedicoCadastro.vue'
-import PacienteCadastro from '../views/Paciente/PacienteCadastro.vue'
-import SecretariaCadastro from '../views/Secretaria/SecretariaCadastro.vue'
-import ConvenioCadastro from '../views/Convenio/ConvenioCadastro.vue'
-import EspecialidadeCadastro from '../views/Especialidade/EspecialidadeCadastro.vue'
+import MedicoForm from '../views/Medico/MedicoForm.vue'
+import PacienteForm from '../views/Paciente/PacienteForm.vue'
+import SecretariaForm from '../views/Secretaria/SecretariaForm.vue'
+import ConvenioForm from '../views/Convenio/ConvenioForm.vue'
+import EspecialidadeForm from '../views/Especialidade/EspecialidadeForm.vue'
 import ConvenioDetalhe from '../views/Convenio/ConvenioDetalhes.vue'
 import EspecialidadeDetalhe from '../views/Especialidade/EspecialidadeDetalhes.vue'
 import MedicoDetalhe from '../views/Medico/MedicoDetalhes.vue'
@@ -60,54 +60,59 @@ const routes: Array<RouteRecordRaw> = [
     component: HistoricoView,
   },
   {
-    path: '/medicoCadastro',
-    name: 'CadastroMedicos',
-    component: MedicoCadastro,
+    path: '/medicos/form',
+    name: 'MedicosForm',
+    component: MedicoForm,
   },
   {
-    path: '/pacienteCadastro',
-    name: 'CadastroPacientes',
-    component: PacienteCadastro,
+    path: '/pacientes/form',
+    name: 'PacientesForm',
+    component: PacienteForm,
   },
   {
-    path: '/secretariaCadastro',
-    name: 'CadastroSecretarias',
-    component: SecretariaCadastro,
+    path: '/secretarias/form',
+    name: 'SecretariasForm',
+    component: SecretariaForm,
   },
   {
-    path: '/convenioCadastro',
-    name: 'CadastroConvenios',
-    component: ConvenioCadastro,
+    path: '/convenios/form',
+    name: 'ConveniosForm',
+    component: ConvenioForm,
   },
   {
-    path: '/especialidadeCadastro',
-    name: 'CadastroEspecialidades',
-    component: EspecialidadeCadastro,
+    path: '/especialidades/form/:model/:id?',
+    name: 'EspecialidadesForm',
+    component: EspecialidadeForm,
+    props: (router) => ({id: router.params.id, model: router.params.model})
   },
   {
-    path: '/detalheConvenio',
+    path: '/convenios/form/:model/:id',
     name: 'DetalheConvenio',
     component: ConvenioDetalhe,
+    props: { defualt: true}
   },
   {
-    path: '/detalheEspecialidade',
+    path: '/especialidades/form/:model/:id',
     name: 'DetalheEspecialidade',
     component: EspecialidadeDetalhe,
   },
   {
-    path: '/detalheMedico',
+    path: '/medicos/form/:model/:id',
     name: 'DetalheMedico',
     component: MedicoDetalhe,
+    props: { defualt: true}
   },
   {
-    path: '/detalhePaciente',
+    path: '/pacientes/form/:model/:id',
     name: 'DetalhePaciente',
     component: PacienteDetalhe,
+    props: { defualt: true}
   },
   {
-    path: '/detalheSecretaria',
+    path: '/secretarias/form/:model/:id',
     name: 'DetalheSecretaria',
     component: SecretariaDetalhe,
+    props: { defualt: true}
   },
 ]
 

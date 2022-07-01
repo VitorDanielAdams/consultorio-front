@@ -5,12 +5,13 @@ export class Medico extends Pessoa {
 
     especialidade! : Especialidade
     crm! : string
-    porcentagemParticipacao! : number
+    porcenParticipacao! : number
     consultorio! : string
+    valorConsulta!: number
 
     constructor() {
         super();
         this.ativo = true
     }
-    
+
 }

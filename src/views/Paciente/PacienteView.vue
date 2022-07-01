@@ -6,29 +6,46 @@
         <input class="input" type="text" placeholder="Pesquisar">
       </div>
       <div class="column is-3">
-        <router-link to="/pacienteCadastro"><button class="button">Cadastrar</button></router-link>
+        <router-link to="/pacientes/form">
+          <button class="button has-background-primary">Cadastrar</button>
+        </router-link>
       </div>
     </div>
     <div class="column is-11">
        <table class="table">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>Tipo Atendimento</th>
-                <th>Cartao</th>
-                <th>Vencimento</th>
-                <th>Convênio</th>
-                <th>Opções</th>
+              <th></th>
+              <th>Nome</th>
+              <th>Tipo Atendimento</th>
+              <th>Cartao</th>
+              <th>Vencimento</th>
+              <th>Convênio</th>
+              <th>Opções</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><router-link to="/detalhePaciente"><button class="button is-size-6">Detalhar</button></router-link></td>
+            <tr v-for="paciente in this.pacientesList" :key="paciente.id">
+              <td v-if="paciente.ativo">
+                <span class="icon has-text-success">
+                  <i class="fas fa-check-square"></i>
+                </span>
+              </td>
+              <td v-if="!paciente.ativo">
+                <span class="icon has-text-danger">
+                  <i class="fas fa-square-xmark"></i>
+                </span>
+              </td>
+              <td>{{paciente.nome}}</td>
+              <td>{{paciente.tipoAtendimento}}</td>
+              <td>{{paciente.numeroCartaoConvenio}}</td>
+              <td>{{paciente.dataVencimento}}</td>
+              <td>{{paciente.convenio.nome}}</td>
+              <td>
+                <router-link to="/detalhePaciente">
+                  <button class="button is-size-6 has-background-grey-light">Detalhar</button>
+                </router-link>
+              </td>
             </tr>
         </tbody>
       </table>
@@ -39,5 +56,35 @@
 <script lang="ts">
   import { Vue } from 'vue-class-component'; 
 
-  export default class PacienteView extends Vue {}
+  import { PageRequest } from '@/model/page/page-request';
+  import { PageResponse } from '@/model/page/page-response';
+
+  import { Paciente } from '@/model/paciente.model';
+  import { PacienteClient } from '@/client/paciente.client';
+
+  export default class PacienteView extends Vue {
+
+    private pageRequest: PageRequest = new PageRequest()
+    private pageResponse: PageResponse<Paciente> = new PageResponse()
+
+    private pacientesList: Paciente[] = []
+    private pacienteClient!: PacienteClient
+
+    public mounted():void {
+      this.pacienteClient = new PacienteClient()
+      this.listarPacientes()
+    }
+
+    private listarPacientes():void {
+      this.pacienteClient.findByFiltrosPaginado(this.pageRequest)
+        .then(
+          success => {
+            this.pageResponse = success
+            this.pacientesList = this.pageResponse.content
+          },
+          error => console.log(error)
+        )
+    }
+
+  }
 </script>

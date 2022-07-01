@@ -6,7 +6,9 @@
         <input class="input" type="text" placeholder="Pesquisar">
       </div>
       <div class="column is-3">
-        <router-link to="/convenioCadastro"><button class="button">Cadastrar</button></router-link>
+        <router-link to="/convenios/form">
+          <button class="button has-background-primary">Cadastrar</button>
+        </router-link>
       </div>
     </div>
     
@@ -14,16 +16,31 @@
       <table class="table">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>Valor</th>
-                <th>Opções</th>
+              <th></th>
+              <th>Nome</th>
+              <th>Valor</th>
+              <th>Opções</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><router-link to="/detalheConvenio"><button class="button is-size-6">Detalhar</button></router-link></td>
+            <tr v-for="convenio in this.conveniosList" :key="convenio.id">
+              <td v-if="convenio.ativo">
+                <span class="icon has-text-success">
+                  <i class="fas fa-check-square"></i>
+                </span>
+              </td>
+              <td v-if="!convenio.ativo">
+                <span class="icon has-text-danger">
+                  <i class="fas fa-square-xmark"></i>
+                </span>
+              </td>
+              <td>{{convenio.nome}}</td>
+              <td>{{convenio.valor}}</td>
+              <td>
+                <router-link to="/detalheConvenio">
+                  <button class="button is-size-6 has-background-grey-light">Detalhar</button>
+                </router-link>
+              </td>
             </tr>
         </tbody>
       </table>
@@ -35,7 +52,35 @@
 <script lang="ts">
   import { Vue } from 'vue-class-component'; 
 
-  export default class ConvenioView extends Vue {}
+  import { PageRequest } from '@/model/page/page-request';
+  import { PageResponse } from '@/model/page/page-response';
+
+  import { Convenio } from '@/model/convenio.model';
+  import { ConvenioClient } from '@/client/convenio.client';
+
+  export default class ConvenioView extends Vue {
+    private pageRequest: PageRequest = new PageRequest()
+    private pageResponse: PageResponse<Convenio> = new PageResponse()
+
+    private conveniosList: Convenio[] = []
+    private convenioClient!: ConvenioClient
+
+    public mounted():void {
+      this.convenioClient = new ConvenioClient()
+      this.listarConvenios()
+    }
+
+    private listarConvenios():void {
+      this.convenioClient.findByFiltrosPaginado(this.pageRequest)
+        .then(
+          success => {
+            this.pageResponse = success
+            this.conveniosList = this.pageResponse.content
+          },
+          error => console.log(error)
+        )
+    }
+  }
 </script>
 
 <style>

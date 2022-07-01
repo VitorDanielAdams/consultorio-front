@@ -2,11 +2,19 @@
     <h1 class="title is-4 has-text-left">Detalhe Especialidade</h1>
     <form>
         <div class="columns p-5">
-            <div class="column is-5">
+            <div class="column is-10">
+                <div class="field has-text-left">
+                    <label class="checkbox">
+                        <input class="checkbox" checked type="checkbox" 
+                            :disabled="model == 'detalhar' ? true : false">
+                        Ativo
+                    </label>
+                </div>
                 <div class="field">
                     <label class="label has-text-left">Nome</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Insira um nome">
+                        <input class="input" type="text" placeholder="Insira um nome" 
+                            :disabled="model == 'detalhar' ? true : false">
                     </div>
                 </div>
             </div>
@@ -36,13 +44,16 @@
 </template>
 
 <script lang="ts">
-    import { Options,Vue } from 'vue-class-component'; 
+    import { Vue } from 'vue-class-component'; 
 
-    @Options({
-        
-    })
+    import { Notification } from '@/model/notification'; 
+    import { Especialidade } from '@/model/especialidade.model';
+    import { EspecialidadeClient } from '@/client/especialidade.client';
+
     export default class EspecialidadeDetalhe extends Vue {
 
+       
+        
     }
 </script>
 
@@ -50,4 +61,5 @@
     .btn {
         width: 15rem;
     }
+
 </style>

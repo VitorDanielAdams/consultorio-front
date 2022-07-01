@@ -6,27 +6,44 @@
         <input class="input" type="text" placeholder="Pesquisar">
       </div>
       <div class="column is-3">
-        <router-link to="/secretariaCadastro"><button class="button">Cadastrar</button></router-link>
+        <router-link to="/secretarias/form">
+          <button class="button has-background-primary">Cadastrar</button>
+        </router-link>
       </div>
     </div>
     <div class="column is-11">
       <table class="table">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>PIS</th>
-                <th>Salario</th>
-                <th>Data Contratação</th>
-                <th>Opções</th>
+              <th></th>
+              <th>Nome</th>
+              <th>PIS</th>
+              <th>Salario</th>
+              <th>Data Contratação</th>
+              <th>Opções</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><router-link to="/detalheSecretaria"><button class="button">Detalhar</button></router-link></td>
+            <tr v-for="secretaria in this.secretariasList" :key="secretaria.id">
+              <td v-if="secretaria.ativo">
+                <span class="icon has-text-success">
+                  <i class="fas fa-check-square"></i>
+                </span>
+              </td>
+              <td v-if="!secretaria.ativo">
+                <span class="icon has-text-danger">
+                  <i class="fas fa-square-xmark"></i>
+                </span>
+              </td>
+              <td>{{secretaria.nome}}</td>
+              <td>{{secretaria.pis}}</td>
+              <td>{{secretaria.salario}}</td>
+              <td>{{secretaria.dataContratacao}}</td>
+              <td>
+                <router-link to="/detalheSecretaria">
+                  <button class="button has-background-grey-light">Detalhar</button>
+                </router-link>
+              </td>
             </tr>
         </tbody>
       </table>
@@ -37,5 +54,36 @@
 <script lang="ts">
   import { Vue } from 'vue-class-component'; 
 
-  export default class SecretariaView extends Vue {}
+  import { PageRequest } from '@/model/page/page-request';
+  import { PageResponse } from '@/model/page/page-response';
+
+  import { Secretaria } from '@/model/secretaria.model';
+  import { SecretariaClient } from '@/client/secretaria.client';
+
+  export default class SecretariaView extends Vue {
+
+    private pageRequest: PageRequest = new PageRequest()
+    private pageResponse: PageResponse<Secretaria> = new PageResponse()
+
+    private secretariasList: Secretaria[] = []
+    private secretariaClient!: SecretariaClient
+
+    public mounted():void {
+      this.secretariaClient = new SecretariaClient()
+      this.listarSecretarias()
+    }
+
+    private listarSecretarias():void {
+      this.secretariaClient.findByFiltrosPaginado(this.pageRequest)
+        .then(
+          success => {
+            this.pageResponse = success
+            this.secretariasList = this.pageResponse.content
+          },
+          error => console.log(error)
+        )
+    }
+
+  }
+
 </script>

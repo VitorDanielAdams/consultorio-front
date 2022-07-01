@@ -6,7 +6,7 @@
         <input class="input" type="text" placeholder="Pesquisar">
       </div>
       <div class="column is-3">
-        <router-link to="/especialidadeCadastro"><button class="button has-background-primary">Cadastrar</button></router-link>
+        <input class="button has-background-primary" type="button" value="Cadastrar" @click="onClickPaginaCadastrar()">
       </div>
     </div>
    
@@ -14,14 +14,28 @@
       <table class="table">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>Opções</th>
+              <th></th>
+              <th>Nome</th>
+              <th>Opções</th>
             </tr>
         </thead>
-        <tbody v-for="especialidade in this.especialidedesList" :key="especialidade.id">
-            <tr>
-                <td>{{especialidade.nome}}</td>
-                <td><router-link to="/detalheEspecialidade"><button class="button is-size-6 has-background-info">Detalhar</button></router-link></td>
+        <tbody>
+            <tr v-for="especialidade in this.especialidedesList" :key="especialidade.id">
+              <td v-if="especialidade.ativo">
+                <span class="icon has-text-success">
+                  <i class="fas fa-check-square"></i>
+                </span>
+              </td>
+              <td v-if="!especialidade.ativo">
+                <span class="icon has-text-danger">
+                  <i class="fas fa-square-xmark"></i>
+                </span>
+              </td>
+              <td>{{especialidade.nome}}</td>
+              <td>
+                <input type="button" class="button is-size-6 has-background-grey-light" 
+                  @click="onClickPaginaDetalhar(especialidade.id)" value="Detalhar">
+              </td>
             </tr>
         </tbody>
       </table>
@@ -60,6 +74,14 @@
           },
           error => console.log(error)
         )
+    }
+
+    private onClickPaginaCadastrar():void {
+      this.$router.push({name: 'EspecialidadesForm', params: { model: 'cadastrar'}})
+    }
+
+    private onClickPaginaDetalhar(idEspecialidade: number):void {
+      this.$router.push({name: 'EspecialidadesForm', params: {id: idEspecialidade, model: 'detalhar'}})
     }
 
   }
