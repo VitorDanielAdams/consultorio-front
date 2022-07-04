@@ -48,7 +48,7 @@
         </div>
         <div class="field" v-if="this.model === 'detalhar'">
             <div class="control">
-                <input class="button has-background-primary has-text-white is-uppercase btn" type="button" value="Desativar"
+                <input class="button has-background-danger has-text-white is-uppercase btn" type="button" value="Desativar"
                     @click="onClickDesativar()">
             </div>
         </div>
@@ -87,7 +87,6 @@
             if (this.id) {
                 this.getById(this.id)
             }
-            console.log(this.id, this.model)
         }
 
         private onClickCadastrar():void { 

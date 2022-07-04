@@ -6,9 +6,7 @@
         <input class="input" type="text" placeholder="Pesquisar">
       </div>
       <div class="column is-3">
-        <router-link to="/convenios/form">
-          <button class="button has-background-primary">Cadastrar</button>
-        </router-link>
+        <input class="button has-background-primary" type="button" value="Cadastrar" @click="onClickPaginaCadastrar()">
       </div>
     </div>
     
@@ -37,9 +35,8 @@
               <td>{{convenio.nome}}</td>
               <td>{{convenio.valor}}</td>
               <td>
-                <router-link to="/detalheConvenio">
-                  <button class="button is-size-6 has-background-grey-light">Detalhar</button>
-                </router-link>
+                <input type="button" class="button is-size-6 has-background-grey-light" 
+                  @click="onClickPaginaDetalhar(convenio.id)" value="Detalhar">
               </td>
             </tr>
         </tbody>
@@ -80,6 +77,15 @@
           error => console.log(error)
         )
     }
+
+    private onClickPaginaCadastrar():void {
+      this.$router.push({name: 'ConveniosForm', params: { model: 'cadastrar'}})
+    }
+
+    private onClickPaginaDetalhar(id: number):void {
+      this.$router.push({name: 'ConveniosForm', params: {id: id, model: 'detalhar'}})
+    }
+
   }
 </script>
 

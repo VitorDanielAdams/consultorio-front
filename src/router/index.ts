@@ -12,11 +12,6 @@ import PacienteForm from '../views/Paciente/PacienteForm.vue'
 import SecretariaForm from '../views/Secretaria/SecretariaForm.vue'
 import ConvenioForm from '../views/Convenio/ConvenioForm.vue'
 import EspecialidadeForm from '../views/Especialidade/EspecialidadeForm.vue'
-import ConvenioDetalhe from '../views/Convenio/ConvenioDetalhes.vue'
-import EspecialidadeDetalhe from '../views/Especialidade/EspecialidadeDetalhes.vue'
-import MedicoDetalhe from '../views/Medico/MedicoDetalhes.vue'
-import PacienteDetalhe from '../views/Paciente/PacienteDetalhes.vue'
-import SecretariaDetalhe from '../views/Secretaria/SecretariaDetalhes.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -60,59 +55,34 @@ const routes: Array<RouteRecordRaw> = [
     component: HistoricoView,
   },
   {
-    path: '/medicos/form',
+    path: '/medicos/form/:model/:id?',
     name: 'MedicosForm',
     component: MedicoForm,
+    props: (router) => ({id: router.params.id, model: router.params.model})
   },
   {
-    path: '/pacientes/form',
+    path: '/pacientes/form/:model/:id?',
     name: 'PacientesForm',
     component: PacienteForm,
+    props: (router) => ({id: router.params.id, model: router.params.model})
   },
   {
-    path: '/secretarias/form',
+    path: '/secretarias/form/:model/:id?',
     name: 'SecretariasForm',
     component: SecretariaForm,
+    props: (router) => ({id: router.params.id, model: router.params.model})
   },
   {
-    path: '/convenios/form',
+    path: '/convenios/form/:model/:id?',
     name: 'ConveniosForm',
     component: ConvenioForm,
+    props: (router) => ({id: router.params.id, model: router.params.model})
   },
   {
     path: '/especialidades/form/:model/:id?',
     name: 'EspecialidadesForm',
     component: EspecialidadeForm,
     props: (router) => ({id: router.params.id, model: router.params.model})
-  },
-  {
-    path: '/convenios/form/:model/:id',
-    name: 'DetalheConvenio',
-    component: ConvenioDetalhe,
-    props: { defualt: true}
-  },
-  {
-    path: '/especialidades/form/:model/:id',
-    name: 'DetalheEspecialidade',
-    component: EspecialidadeDetalhe,
-  },
-  {
-    path: '/medicos/form/:model/:id',
-    name: 'DetalheMedico',
-    component: MedicoDetalhe,
-    props: { defualt: true}
-  },
-  {
-    path: '/pacientes/form/:model/:id',
-    name: 'DetalhePaciente',
-    component: PacienteDetalhe,
-    props: { defualt: true}
-  },
-  {
-    path: '/secretarias/form/:model/:id',
-    name: 'DetalheSecretaria',
-    component: SecretariaDetalhe,
-    props: { defualt: true}
   },
 ]
 

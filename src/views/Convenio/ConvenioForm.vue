@@ -10,20 +10,23 @@
         <div class="column is-5">
             <div class="field has-text-left">
                 <label class="checkbox">
-                    <input v-model="this.convenio.ativo" class="checkbox" checked type="checkbox">
+                    <input v-model="this.convenio.ativo" class="checkbox" checked type="checkbox" 
+                        :disabled="this.model == 'detalhar' ? true : false">
                     Ativo
                 </label>
             </div>
             <div class="field">
                 <label class="label has-text-left">Nome</label>
                 <div class="control">
-                    <input class="input" type="text" v-model="this.convenio.nome" placeholder="Insira um nome">
+                    <input class="input" type="text" v-model="this.convenio.nome" placeholder="Insira um nome"
+                        :disabled="this.model == 'detalhar' ? true : false">
                 </div>
             </div>
             <div class="field">
                 <label class="label has-text-left">Valor</label>
                 <div class="control">
-                    <input class="input" type="number" step=0.01 v-model="this.convenio.valor" placeholder="Insira um valor">
+                    <input class="input" type="number" step=0.01 v-model="this.convenio.valor" placeholder="Insira um valor"
+                        :disabled="this.model == 'detalhar' ? true : false">
                 </div>
             </div>
         </div>
@@ -36,10 +39,28 @@
                 </router-link>
             </div>
         </div>
-        <div class="field">
+        <div class="field" v-if="this.model === 'cadastrar'">
             <div class="control">
-                <input type="button" class="button has-background-primary has-text-white is-uppercase btn" 
-                    @click="onClickCadastrar()" value="Cadastrar">
+                <input class="button has-background-primary has-text-white is-uppercase btn" type="button" value="Cadastrar"
+                    @click="onClickCadastrar()">
+            </div>
+        </div>
+        <div class="field" v-if="this.model === 'detalhar'">
+            <div class="control">
+                <input class="button has-background-primary has-text-white is-uppercase btn" type="button" value="Editar" 
+                    @click="onClickPaginaEditar(this.id)">
+            </div>
+        </div>
+        <div class="field" v-if="this.model === 'detalhar'">
+            <div class="control">
+                <input class="button has-background-danger has-text-white is-uppercase btn" type="button" value="Desativar"
+                    @click="onClickDesativar()">
+            </div>
+        </div>
+        <div class="field" v-if="this.model === 'editar'">
+            <div class="control">
+                <input class="button has-background-primary has-text-white is-uppercase btn" type="button" value="Editar"
+                    @click="onClickEditar()">
             </div>
         </div>
     </div>
@@ -48,6 +69,7 @@
 <script lang="ts">
     import { Vue } from 'vue-class-component'; 
 
+    import { Prop } from 'vue-property-decorator'
     import { Notification } from '@/model/notification'; 
     import { Convenio } from '@/model/convenio.model';
     import { ConvenioClient } from '@/client/convenio.client';
@@ -58,8 +80,17 @@
         private convenio: Convenio = new Convenio()
         private notification: Notification = new Notification()
 
+        @Prop({type: Number, required: false})
+        private readonly id!:number
+
+        @Prop({type: String, required: false})
+        private readonly model!:string
+
         public mounted():void {
             this.convenioClient = new ConvenioClient();
+            if (this.id) {
+                this.getById(this.id)
+            }
         }
 
         private onClickCadastrar():void { 
@@ -74,6 +105,27 @@
                 }
                 )       
         }
+
+        private onClickEditar() {
+            this.convenioClient.editar(this.convenio)
+                .then(
+                    success => {
+                        this.$router.push('/convenios')
+                    }, error => {
+                        this.notification = this.notification.new(true,'notification is-danger','Error: ' + error)
+                        this.onClickLimpar()
+                    }
+                )
+        }
+
+        private onClickDesativar() {
+            this.convenioClient.desativar(this.convenio)
+                .then(
+                    success => {
+                        this.$router.push('/convenios')
+                    }
+                )
+        }
         
         private onClickFecharNotificacao():void {
             this.notification = new Notification()
@@ -81,6 +133,19 @@
 
         private onClickLimpar():void {
             this.convenio = new Convenio()
+        }
+
+        private getById(id: number):void {
+            this.convenioClient.findById(id)
+                .then(
+                    success => {
+                        this.convenio = success
+                    }
+                )
+        }
+
+        private onClickPaginaEditar(id: number):void { 
+            this.$router.push({name: 'ConveniosForm', params: {id: id, model: 'editar'}})
         }
 
     }
