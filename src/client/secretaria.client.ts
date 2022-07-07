@@ -49,6 +49,26 @@ export class SecretariaClient {
         }
     }
 
+    public async findByName(pageRequest: PageRequest,name: string): Promise<PageResponse<Secretaria>> {
+		try {
+				
+			let requestPath = ''
+			
+			requestPath += `?page=${pageRequest.currentPage}`
+			requestPath += `&size=${pageRequest.pageSize}`
+			requestPath += `&sort=${pageRequest.sortField === undefined 
+				? '' : pageRequest.sortField},${pageRequest.direction}`
+			
+			return (await this.axiosClient.get<PageResponse<Secretaria>>(`/busca/${name}`+requestPath,
+				{ 
+					params: { filtros: pageRequest.filter } 
+				}
+			)).data
+		} catch (error: any) { 
+			return Promise.reject(error.response) 
+		}
+	}
+
     public async editar(secretaria: Secretaria): Promise<void> {
         try {
             return (await this.axiosClient.put(`/${secretaria.id}`, secretaria)).data

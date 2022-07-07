@@ -49,6 +49,26 @@ export class PacienteClient {
         }
     }
 
+    public async findByName(pageRequest: PageRequest,name: string): Promise<PageResponse<Paciente>> {
+		try {
+				
+			let requestPath = ''
+			
+			requestPath += `?page=${pageRequest.currentPage}`
+			requestPath += `&size=${pageRequest.pageSize}`
+			requestPath += `&sort=${pageRequest.sortField === undefined 
+				? '' : pageRequest.sortField},${pageRequest.direction}`
+			
+			return (await this.axiosClient.get<PageResponse<Paciente>>(`/busca/${name}`+requestPath,
+				{ 
+					params: { filtros: pageRequest.filter } 
+				}
+			)).data
+		} catch (error: any) { 
+			return Promise.reject(error.response) 
+		}
+	}
+
     public async editar(paciente: Paciente): Promise<void> {
         try {
             return (await this.axiosClient.put(`/${paciente.id}`, paciente)).data

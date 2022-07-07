@@ -41,6 +41,26 @@ export class MedicoClient {
         }
     }
 
+    public async findByName(pageRequest: PageRequest,name: string): Promise<PageResponse<Medico>> {
+		try {
+				
+			let requestPath = ''
+			
+			requestPath += `?page=${pageRequest.currentPage}`
+			requestPath += `&size=${pageRequest.pageSize}`
+			requestPath += `&sort=${pageRequest.sortField === undefined 
+				? '' : pageRequest.sortField},${pageRequest.direction}`
+			
+			return (await this.axiosClient.get<PageResponse<Medico>>(`/busca/${name}`+requestPath,
+				{ 
+					params: { filtros: pageRequest.filter } 
+				}
+			)).data
+		} catch (error: any) { 
+			return Promise.reject(error.response) 
+		}
+	}
+
     public async findById(id: number): Promise<Medico> {
         try {
             return (await this.axiosClient.get<Medico>(`/${id}`)).data

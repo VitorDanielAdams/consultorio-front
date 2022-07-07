@@ -2,8 +2,11 @@
   <div>
     <h3 class="title is-5 has-text-left">Lista de Especialidades</h3>
     <div class="columns">
-      <div class="column is-6">
-        <input class="input" type="text" placeholder="Pesquisar">
+      <div class="column is-4">
+        <input class="input" type="text" v-model="this.textSearch" placeholder="Pesquisar">
+      </div>
+      <div class="column is-2">
+        <input class="button has-background-info" type="button" value="Pesquisar" @click="onClickPesquisar()">
       </div>
       <div class="column is-3">
         <input class="button has-background-primary" type="button" value="Cadastrar" @click="onClickPaginaCadastrar()">
@@ -57,6 +60,7 @@
     private pageRequest: PageRequest = new PageRequest()
     private pageResponse: PageResponse<Especialidade> = new PageResponse()
 
+    private textSearch = ""
     private especialidedesList: Especialidade[] = []
     private especialidadeClient!: EspecialidadeClient
 
@@ -72,6 +76,17 @@
             this.pageResponse = success
             this.especialidedesList = this.pageResponse.content
           },
+          error => console.log(error)
+        )
+    }
+
+    private onClickPesquisar():void {
+      this.especialidadeClient.findByName(this.pageRequest,this.textSearch)
+        .then(
+          success => {
+            this.pageResponse = success
+            this.especialidedesList = this.pageResponse.content
+          }, 
           error => console.log(error)
         )
     }
