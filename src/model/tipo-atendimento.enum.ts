@@ -1,6 +1,6 @@
 export enum TipoAtendimento {
 
-    plano = "plano",
+    particular = "particular",
         convenio = "convenio"
 
 }

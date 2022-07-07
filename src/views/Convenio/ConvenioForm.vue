@@ -106,7 +106,7 @@
                 )       
         }
 
-        private onClickEditar() {
+        private onClickEditar():void {
             this.convenioClient.editar(this.convenio)
                 .then(
                     success => {
@@ -118,7 +118,7 @@
                 )
         }
 
-        private onClickDesativar() {
+        private onClickDesativar():void {
             this.convenioClient.desativar(this.convenio)
                 .then(
                     success => {

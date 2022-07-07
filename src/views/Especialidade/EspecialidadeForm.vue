@@ -107,7 +107,7 @@
             }       
         }
 
-        private onClickEditar() {
+        private onClickEditar():void {
             this.especialidadeClient.editar(this.especialidade)
                 .then(
                     success => {
@@ -119,7 +119,7 @@
                 )
         }
 
-        private onClickDesativar() {
+        private onClickDesativar():void {
             this.especialidadeClient.desativar(this.especialidade)
                 .then(
                     success => {

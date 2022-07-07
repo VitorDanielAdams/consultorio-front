@@ -193,7 +193,7 @@
                 )       
         }
 
-        private onClickEditar() {
+        private onClickEditar():void {
             this.secretariaClient.editar(this.secretaria)
                 .then(
                     success => {
@@ -205,7 +205,7 @@
                 )
         }
 
-        private onClickDesativar() {
+        private onClickDesativar():void {
             this.secretariaClient.desativar(this.secretaria)
                 .then(
                     success => {

@@ -58,8 +58,8 @@
                     </div>
                 </div>
             </div>
-            <div class="field">
-                <label class="label has-text-left" v-if="this.paciente.convenio">Convênio</label>
+            <div class="field" v-if="this.paciente.tipoAtendimento == 'convenio'">
+                <label class="label has-text-left">Convênio</label>
                 <div class="control is-flex">
                     <div class="select"> 
                         <select v-model="this.paciente.convenio" :disabled="this.model == 'detalhar' ? true : false">
@@ -70,7 +70,7 @@
                     </div>
                 </div>
             </div>
-            <div class="field" v-if="this.paciente.convenio">
+            <div class="field" v-if="this.paciente.tipoAtendimento ==  'convenio'">
                 <label class="label has-text-left">Numero do Cartão</label>
                 <div class="control">
                     <input class="input" type="text" v-model="this.paciente.numeroCartaoConvenio" 
@@ -115,16 +115,16 @@
                     <div class="select"> 
                         <select v-model="this.paciente.tipoAtendimento" :disabled="this.model == 'detalhar' ? true : false">
                             <option value="">Selecione</option>
-                            <option value="plano">Plano</option>
+                            <option value="particular">Particular</option>
                             <option value="convenio">Convenio</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="field" v-if="this.paciente.tipoAtendimento == TipoAtendimento.convenio">
+            <div class="field" v-if="this.paciente.tipoAtendimento == 'convenio'">
                 <label class="label has-text-left">Data De Vencimento</label>
                 <div class="control">
-                    <input class="input" type="datetime-local" :disabled="this.model == 'detalhar' ? true : false">
+                    <input class="input" type="datetime-local" v-model="this.paciente.dataVencimento" :disabled="this.model == 'detalhar' ? true : false">
                 </div>
             </div>
         </div>
@@ -201,9 +201,7 @@
         public mounted():void {
             this.pacienteClient = new PacienteClient();
             this.convenioClient = new ConvenioClient()
-            if(this.paciente.tipoAtendimento == TipoAtendimento.convenio) {
-                this.listarConvenios()
-            }
+            this.listarConvenios()
             if (this.id) {
                 this.getById(this.id)
             }
@@ -233,7 +231,7 @@
                 )       
         }
 
-        private onClickEditar() {
+        private onClickEditar():void {
             this.pacienteClient.editar(this.paciente)
                 .then(
                     success => {
@@ -245,7 +243,7 @@
                 )
         }
 
-        private onClickDesativar() {
+        private onClickDesativar():void {
             this.pacienteClient.desativar(this.paciente)
                 .then(
                     success => {

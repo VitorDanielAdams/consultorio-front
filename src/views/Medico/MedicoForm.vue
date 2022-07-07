@@ -235,7 +235,7 @@
                 )       
         }
 
-        private onClickEditar() {
+        private onClickEditar():void {
             this.medicoClient.editar(this.medico)
                 .then(
                     success => {
@@ -247,7 +247,7 @@
                 )
         }
 
-        private onClickDesativar() {
+        private onClickDesativar():void {
             this.medicoClient.desativar(this.medico)
                 .then(
                     success => {
